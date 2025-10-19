@@ -1,0 +1,29 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Regla para portadas de libros - todos pueden leer, solo usuarios autenticados pueden subir
+    match /book-covers/{bookId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // Regla para archivos PDF - todos pueden leer, solo el propietario puede escribir
+    match /pdfs/{userId}/{bookId}/{allPaths=**} {
+      allow read: if true;
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow update, delete: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Regla para avatares de usuario - solo el usuario puede subir su avatar
+    match /user-avatars/{userId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Regla general - rechazar por defecto cualquier otra ruta
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

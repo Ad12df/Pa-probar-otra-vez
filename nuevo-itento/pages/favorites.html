@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiblioDigital - Favoritos</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="app-layout">
+    <!-- Sidebar -->
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileMenu()"></div>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
+                    <rect width="60" height="60" rx="12" fill="#0d9488"/>
+                    <path d="M20 15h20v5H20zM20 25h20v5H20zM20 35h15v5H20z" fill="white"/>
+                </svg>
+            </div>
+            <h2 class="sidebar-title">BiblioDigital</h2>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="../index.html" class="nav-item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                </svg>
+                <span>Inicio</span>
+            </a>
+            <a href="catalog.html" class="nav-item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+                <span>Catálogo</span>
+            </a>
+            <a href="favorites.html" class="nav-item active">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                <span>Favoritos</span>
+            </a>
+            <a href="library.html" class="nav-item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                </svg>
+                <span>Mi Biblioteca</span>
+            </a>
+            <a href="settings.html" class="nav-item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3"></path>
+                </svg>
+                <span>Configuración</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <span id="userInitials">U</span>
+                </div>
+                <div class="user-info">
+                    <p class="user-name" id="userName">Usuario</p>
+                    <p class="user-email" id="userEmail">usuario@email.com</p>
+                </div>
+            </div>
+            <button class="btn btn-text" id="logoutBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                Cerrar sesión
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="page-header">
+            <div>
+                <h1 class="page-title">Mis Favoritos</h1>
+                <p class="page-subtitle">Tus libros guardados con amor ❤️</p>
+            </div>
+        </header>
+
+        <!-- Favorites Grid -->
+        <div class="books-grid" id="favoritesGrid"></div>
+
+        <div class="no-results" id="noFavorites" style="display: none;">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+            <h3>No tienes favoritos aún</h3>
+            <p>Explora el catálogo y agrega libros a tus favoritos</p>
+            <a href="catalog.html" class="btn btn-primary" style="margin-top: 1.5rem;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+                Explorar Catálogo
+            </a>
+        </div>
+    </main>
+
+    <!-- Book Modal -->
+    <div class="modal" id="bookModal">
+        <div class="modal-overlay" onclick="closeModal()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="modal-body">
+                <div class="modal-cover">
+                    <img id="modalCover" src="" alt="">
+                </div>
+                <div class="modal-info">
+                    <span class="book-badge" id="modalCategory"></span>
+                    <h2 class="modal-title" id="modalTitle"></h2>
+                    <p class="modal-author" id="modalAuthor"></p>
+                    <p class="modal-description" id="modalDescription"></p>
+                    
+                    <div class="modal-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Páginas</span>
+                            <span class="meta-value" id="modalPages"></span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Año</span>
+                            <span class="meta-value" id="modalYear"></span>
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" onclick="startReading()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                            </svg>
+                            Leer Ahora
+                        </button>
+                        <button class="btn btn-danger" onclick="removeFromFavorites()" id="removeFavoriteBtn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                            </svg>
+                            Quitar de Favoritos
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- Configuration -->
+    <script src="../js/firebase-config.js"></script>
+    
+    <!-- App Logic -->
+    <script src="../js/app-localStorage.js"></script>
+</body>
+</html>

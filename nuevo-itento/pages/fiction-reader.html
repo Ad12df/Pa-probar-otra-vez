@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lector Fiction Express - BiblioDigital</title>
+    <link rel="stylesheet" href="../css/fiction-reader.css">
+</head>
+<body>
+    <div class="reader-container">
+        <!-- Header con información del libro -->
+        <header class="reader-header">
+            <button class="btn-back" onclick="window.location.href='../index.html'">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M19 12H5M12 19l-7-7 7-7" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                Volver
+            </button>
+            <div class="book-info">
+                <h1 class="book-title" id="bookTitle">Cargando...</h1>
+                <p class="book-author" id="bookAuthor"></p>
+            </div>
+            <div class="progress-info">
+                <span id="pageCounter">Página 0 / 0</span>
+            </div>
+        </header>
+
+        <!-- Contenedor principal del contenido -->
+        <main class="reader-content">
+            <div class="page-container">
+                <div class="page-number-top" id="pageNumberTop"></div>
+                <div class="page-text" id="pageText">
+                    <p>Cargando contenido...</p>
+                </div>
+                <div class="page-number-bottom" id="pageNumberBottom"></div>
+            </div>
+        </main>
+
+        <!-- Controles de navegación -->
+        <footer class="reader-controls">
+            <button class="btn-nav btn-prev" id="btnPrev" disabled>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M15 18l-6-6 6-6" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>Anterior</span>
+            </button>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+                <div class="progress-text" id="progressText">0%</div>
+            </div>
+
+            <button class="btn-nav btn-next" id="btnNext">
+                <span>Siguiente</span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M9 18l6-6-6-6" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </footer>
+
+        <!-- Selector de libro (opcional) -->
+        <div class="book-selector" id="bookSelector">
+            <label for="selectBook">Cambiar libro:</label>
+            <select id="selectBook">
+                <option value="">Seleccionar libro...</option>
+            </select>
+        </div>
+    </div>
+
+    <script src="../js/fiction-reader.js"></script>
+</body>
+</html>

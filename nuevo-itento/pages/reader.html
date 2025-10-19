@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lector Avanzado - BiblioDigital</title>
+    <link rel="stylesheet" href="../css/advanced-reader.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/epubjs@0.3.93/dist/epub.min.js"></script>
+</head>
+<body>
+    <!-- Toolbar superior -->
+    <div class="reader-toolbar">
+        <div class="toolbar-left">
+            <button class="btn-icon" id="btnBack" title="Volver">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M19 12H5M12 19l-7-7 7-7" stroke-width="2"/>
+                </svg>
+            </button>
+            <h1 class="book-title" id="bookTitle">Lector BiblioDigital</h1>
+        </div>
+        
+        <div class="toolbar-center">
+            <button class="btn-icon" id="btnPrevPage" title="Página anterior">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M15 18l-6-6 6-6" stroke-width="2"/>
+                </svg>
+            </button>
+            <span class="page-info" id="pageInfo">0 / 0</span>
+            <button class="btn-icon" id="btnNextPage" title="Página siguiente">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M9 18l6-6-6-6" stroke-width="2"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="toolbar-right">
+            <button class="btn-icon" id="btnHighlight" title="Subrayar" data-active="false">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M4 19h16M12 3l-8 8 3 3 8-8-3-3z" stroke-width="2"/>
+                </svg>
+            </button>
+            <button class="btn-icon" id="btnNote" title="Añadir nota">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke-width="2"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-width="2"/>
+                </svg>
+            </button>
+            <button class="btn-icon" id="btnZoomOut" title="Alejar">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="11" cy="11" r="8" stroke-width="2"/>
+                    <path d="M21 21l-4.35-4.35M8 11h6" stroke-width="2"/>
+                </svg>
+            </button>
+            <span class="zoom-level" id="zoomLevel">100%</span>
+            <button class="btn-icon" id="btnZoomIn" title="Acercar">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="11" cy="11" r="8" stroke-width="2"/>
+                    <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" stroke-width="2"/>
+                </svg>
+            </button>
+            <button class="btn-icon" id="btnSettings" title="Configuración">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="3" stroke-width="2"/>
+                    <path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m7.08 7.08l4.24 4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m7.08-7.08l4.24-4.24" stroke-width="2"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Panel lateral de anotaciones -->
+    <div class="annotations-panel" id="annotationsPanel">
+        <div class="panel-header">
+            <h3>Anotaciones</h3>
+            <button class="btn-close" id="btnClosePanel">×</button>
+        </div>
+        <div class="annotations-list" id="annotationsList">
+            <p class="empty-message">No hay anotaciones aún</p>
+        </div>
+    </div>
+
+    <!-- Área de lectura -->
+    <div class="reader-container">
+        <div class="reader-content" id="readerContent">
+            <!-- El contenido del libro se cargará aquí -->
+            <div class="loading-message">
+                <div class="spinner"></div>
+                <p>Cargando libro...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para notas -->
+    <div class="modal" id="noteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Añadir Nota</h3>
+                <button class="btn-close" id="btnCloseModal">×</button>
+            </div>
+            <div class="modal-body">
+                <textarea id="noteText" placeholder="Escribe tu nota aquí..." rows="5"></textarea>
+                <div class="selected-text" id="selectedText"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="btnCancelNote">Cancelar</button>
+                <button class="btn-primary" id="btnSaveNote">Guardar Nota</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel de configuración -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="panel-header">
+            <h3>Configuración</h3>
+            <button class="btn-close" id="btnCloseSettings">×</button>
+        </div>
+        <div class="settings-content">
+            <div class="setting-group">
+                <label>Tamaño de fuente</label>
+                <input type="range" id="fontSizeSlider" min="12" max="24" value="16" step="1">
+                <span id="fontSizeValue">16px</span>
+            </div>
+            <div class="setting-group">
+                <label>Modo de lectura</label>
+                <select id="readingMode">
+                    <option value="light">Claro</option>
+                    <option value="sepia">Sepia</option>
+                    <option value="dark">Oscuro</option>
+                </select>
+            </div>
+            <div class="setting-group">
+                <label>Solo texto (ocultar imágenes)</label>
+                <input type="checkbox" id="textOnlyMode" checked>
+            </div>
+        </div>
+    </div>
+
+    <!-- Input oculto para cargar archivos -->
+    <input type="file" id="fileInput" accept=".pdf,.epub" style="display: none;">
+
+    <script src="../js/advanced-reader.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Regla para usuarios - solo el usuario autenticado puede leer/escribir sus propios datos
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Regla para libros - todos pueden leer, solo usuarios autenticados pueden escribir
+    match /books/{bookId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && 
+        (resource.data.userId == request.auth.uid || request.auth.token.admin == true);
+    }
+    
+    // Regla para bibliotecas de usuarios - solo el propietario puede acceder
+    match /userLibraries/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      
+      match /books/{bookId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+    
+    // Regla para favoritos - solo el usuario puede ver y modificar sus favoritos
+    match /favorites/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Regla para configuraciones de usuario
+    match /userSettings/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Regla para el catálogo público - todos pueden leer, solo admins pueden escribir
+    match /catalog/{bookId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.admin == true;
+    }
+  }
+}
